@@ -6,6 +6,9 @@ from PIL import Image
 
 
 class TestImgOptimizer(unittest.TestCase):
+    def set_up(self):
+        pass
+    
     def test_get_files(self):
         valid_directory_images = get_files("images")
         self.assertTrue(valid_directory_images)

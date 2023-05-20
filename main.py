@@ -31,7 +31,6 @@ def filter_files(files: list[str]) -> list[str]:
                        if os.path.splitext(file)[1]
                        in [".jpg", ".webp", ".png"]]:
         return valid_files
-
     raise DirectoryIsEmpty("This directory is empty")
 
 
@@ -71,8 +70,6 @@ def optimize_images(images: list[str], from_directory: str,
 
 
 def get_images_size(images: list[str], directory: str) -> dict[str, str]:
-    if not images:
-        pass
     dir_path = os.path.abspath(directory)
     sizes = {}
     for image in images:
@@ -82,7 +79,7 @@ def get_images_size(images: list[str], directory: str) -> dict[str, str]:
     return sizes
 
 
-def main():
+def main() -> None:
     try:
         images = get_files(directory="images")
         images2 = get_files(directory="dist")
@@ -100,7 +97,8 @@ def main():
         sizes2 = get_images_size(filter2, directory="dist")
         print(sizes)
         print(sizes2)
-    except (DirectoryNotFound, DirectoryIsEmpty) as err:
+    except (DirectoryNotFound, DirectoryIsEmpty, 
+            ValueError) as err:
         print(err)
 
 
