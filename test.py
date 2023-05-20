@@ -1,6 +1,6 @@
 import os
 import unittest
-from main import  DirectoryNotFound, DirectoryIsEmpty, get_files, images_metadata, optimize_images, get_images_size, filter_files
+from main import DirectoryNotFound, DirectoryIsEmpty, get_files, images_metadata, optimize_images, get_images_size, filter_files
 import tempfile
 from PIL import Image
 
@@ -21,11 +21,14 @@ class TestImgOptimizer(unittest.TestCase):
        
     def test_filter_files(self):
         filter = filter_files(get_files("images"))
-
         self.assertIsInstance(filter, list)
 
         for filter_file in filter:
           self.assertIsInstance(filter_file, str)
+
+        # invalid argument
+        with self.assertRaises(ValueError):
+            filter_files(files=[])
 
 
     def test_images_metadata(self):
