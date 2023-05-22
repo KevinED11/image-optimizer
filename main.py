@@ -11,8 +11,12 @@ class DirectoryIsEmpty(Exception):
     pass
 
 
+def get_absolute_path(path: str) -> str:
+    return os.path.abspath(path)
+
+
 def get_files(directory: str) -> list[str]:
-    dir_path = os.path.abspath(directory)
+    dir_path = directory
     if not os.path.exists(dir_path):
         raise DirectoryNotFound(f"Directory not found: {dir_path}")
 
@@ -35,13 +39,13 @@ def filter_files(files: list[str]) -> list[str]:
 
 
 def show_image(image_path: str) -> None:
-    dir_path = os.path.abspath(image_path)
+    dir_path = image_path
     with Image.open(dir_path) as image:
         image.show()
 
 
-def images_metadata(images: list[str]) -> dict[str, list]:
-    dir_path = os.path.abspath("images")
+def images_metadata(images: list[str], directory: str = "images") -> dict[str, list]:
+    dir_path = directory
     data = {}
     for image in images:
         data[image] = []
@@ -59,8 +63,8 @@ def optimize_images(
     quality: float = 50,
     output_format: str = "WEBP",
 ) -> None:
-    from_dir_path = os.path.abspath(from_directory)
-    to_dir_path = os.path.abspath(to_directory)
+    from_dir_path = from_directory
+    to_dir_path = to_directory
 
     os.makedirs(to_dir_path, exist_ok=True)
 
@@ -74,7 +78,7 @@ def optimize_images(
 
 
 def get_images_size(images: list[str], directory: str) -> dict[str, str]:
-    dir_path = os.path.abspath(directory)
+    dir_path = directory
     sizes = {}
     for image in images:
         sizes[image] = humanize.naturalsize(
@@ -86,8 +90,8 @@ def get_images_size(images: list[str], directory: str) -> dict[str, str]:
 
 def main() -> None:
     try:
-        images = get_files(directory="images")
-        images2 = get_files(directory="dist")
+        images = get_files(get_absolute_path("images"))
+        images2 = get_files(get_absolute_path("dist"))
         filter = filter_files(images)
         filter2 = filter_files(images2)
 
@@ -96,13 +100,13 @@ def main() -> None:
 
         optimize_images(
             filter,
-            from_directory="images",
-            to_directory="/home/kevind/Documentos/Workspace",
+            from_directory=get_absolute_path("images"),
+            to_directory=get_absolute_path("/home/kevind/Documentos"),
             quality=50,
         )
 
-        sizes = get_images_size(filter, directory="images")
-        sizes2 = get_images_size(filter2, directory="dist")
+        sizes = get_images_size(filter, directory=get_absolute_path("images"))
+        sizes2 = get_images_size(filter2, directory=get_absolute_path("dist"))
         print(sizes)
         print(sizes2)
     except (DirectoryNotFound, DirectoryIsEmpty, ValueError) as err:
