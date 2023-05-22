@@ -8,13 +8,14 @@ from main import (
     optimize_images,
     get_images_size,
     filter_files,
+    get_absolute_path
 )
 import tempfile
 
 
 class TestImgOptimizer(unittest.TestCase):
     def setUp(self) -> None:
-        self.valid_directory = get_files("images")
+        self.valid_directory = get_files(get_absolute_path("images"))
         self.invalid_directory = "imgs"
         self.filtered_files = filter_files(self.valid_directory)
 

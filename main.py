@@ -20,11 +20,10 @@ def get_files(directory: str) -> list[str]:
     if not os.path.exists(dir_path):
         raise DirectoryNotFound(f"Directory not found: {dir_path}")
 
-    files = os.listdir(dir_path)
-    if not files:
-        raise DirectoryIsEmpty("This directory is empty")
+    if files := os.listdir(dir_path):
+        return files    
+    raise DirectoryIsEmpty("This directory is empty")
 
-    return files
 
 
 def filter_files(files: list[str]) -> list[str]:
